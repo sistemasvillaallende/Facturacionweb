@@ -1,0 +1,79 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Facturacion.WSAfip.email
+// Assembly: Facturacion, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: A9493007-1D65-4194-8547-961B9C83CD9E
+// Assembly location: H:\NET 2018\Facturacion\bin\Facturacion.dll
+
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
+namespace Facturacion.WSAfip
+{
+  [GeneratedCode("System.Xml", "4.6.1067.0")]
+  [DebuggerStepThrough]
+  [DesignerCategory("code")]
+  [XmlType(Namespace = "http://a4.soap.ws.server.puc.sr/")]
+  [Serializable]
+  public class email : INotifyPropertyChanged
+  {
+    private string direccionField;
+    private string estadoField;
+    private string tipoEmailField;
+
+    [XmlElement(Form = XmlSchemaForm.Unqualified, Order = 0)]
+    public string direccion
+    {
+      get
+      {
+        return this.direccionField;
+      }
+      set
+      {
+        this.direccionField = value;
+        this.RaisePropertyChanged(nameof (direccion));
+      }
+    }
+
+    [XmlElement(Form = XmlSchemaForm.Unqualified, Order = 1)]
+    public string estado
+    {
+      get
+      {
+        return this.estadoField;
+      }
+      set
+      {
+        this.estadoField = value;
+        this.RaisePropertyChanged(nameof (estado));
+      }
+    }
+
+    [XmlElement(Form = XmlSchemaForm.Unqualified, Order = 2)]
+    public string tipoEmail
+    {
+      get
+      {
+        return this.tipoEmailField;
+      }
+      set
+      {
+        this.tipoEmailField = value;
+        this.RaisePropertyChanged(nameof (tipoEmail));
+      }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void RaisePropertyChanged(string propertyName)
+    {
+      PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+      if (propertyChanged == null)
+        return;
+      propertyChanged((object) this, new PropertyChangedEventArgs(propertyName));
+    }
+  }
+}
