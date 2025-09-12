@@ -1,6 +1,6 @@
 ﻿using BLL;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
+//using CrystalDecisions.CrystalReports.Engine;
+//using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,72 +12,144 @@ namespace Facturacion.Reportes
 {
     public partial class Factura1 : System.Web.UI.Page
     {
-        private ReportDocument customerReport;
-        Int32 nro_cedulon = 0;
-        CrystalDecisions.Web.CrystalReportViewer crview;
+        //private ReportDocument customerReport;
+        //Int32 nro_cedulon = 0;
+        //CrystalDecisions.Web.CrystalReportViewer crview;
+
+        //protected void Page_Load(object sender, EventArgs e)
+        //{
+        //crview = new CrystalDecisions.Web.CrystalReportViewer();
+        //customerReport = new ReportDocument();
+        //if(Request.QueryString["NROTRAN"] != null)
+        //    ConfigureCrystalReports(Convert.ToInt32(Request.QueryString["NROTRAN"]));
+        //}
+
+        //private void ConfigureCrystalReports(int nroTran)
+        //{
+        //    try
+        //    {
+        //        string reportPath = Server.MapPath("Factura.rpt");
+
+
+        //        customerReport.PrintOptions.PaperSize = PaperSize.PaperA4;
+        //        customerReport.Load(reportPath);
+
+        //        int nroCedulon = BLL.Facturacion.getNroCedulon(nroTran);
+
+        //        DAL.Facturacion objFactu = BLL.Facturacion.getByNroTran(nroTran);
+
+        //        decimal monto_2 = objFactu.monto;
+        //        string vencimiento_2 = objFactu.fecha_transaccion.ToShortDateString();
+
+        //        string strCadena = Library.ArmoCBarra(
+        //            "0", nroCedulon.ToString(), monto_2, vencimiento_2, 0, "0", "10");
+
+        //        Persona objPers = Persona.getByPk(Convert.ToInt64(objFactu.CUIT));
+
+
+        //        //customerReport.SetParameterValue("strPeriodos", strPeriodos);
+
+        //        customerReport.SetParameterValue("CodigoBarraRapiPago", Library.ConvertToChar(strCadena));
+        //        customerReport.SetParameterValue("nroCodigoBarraRapiPago", strCadena);
+        //        customerReport.SetParameterValue("FechaImpresion", DateTime.Now.ToShortDateString());
+        //        customerReport.SetParameterValue("nroCedulon", string.Format("C0{0}", nroCedulon));
+        //        customerReport.SetParameterValue("categoriaDeuda", objFactu.des_categoria);
+        //        customerReport.SetParameterValue("CUIT", objFactu.CUIT);
+        //        customerReport.SetParameterValue("contribuyente", objFactu.nombre);
+        //        customerReport.SetParameterValue("direccion1", objPers.direccion);
+        //        customerReport.SetParameterValue("direccion2", string.Format("({0}) {1} - {2}",
+        //            objPers.codPostal, objPers.localidad, 
+        //            Utils.getProvincia(objPers.idProvincia)));
+        //        customerReport.SetParameterValue("obs", objFactu.observaciones.ToString());
+        //        customerReport.SetParameterValue("vencimiento", objFactu.vencimiento.ToShortDateString());
+        //        customerReport.SetParameterValue("importe", string.Format("{0:c}", objFactu.monto));
+        //        customerReport.SetParameterValue("codigoBarraCaja", "*" + string.Format("C0{0}", nroCedulon) + "*");
+
+        //        crview.ReportSource = customerReport;
+        //        crview.RefreshReport();
+        //        crview.DataBind();
+        //        customerReport.ExportToHttpResponse
+        //            (CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, Response, false, "");
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        System.Console.WriteLine("Error, no se pudo generar el Reporte " + ex.Message);
+        //        Response.Write("Hubo problemas con el cedulon, no se pudo generar el Reporte...");
+        //    }
+        //}
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            crview = new CrystalDecisions.Web.CrystalReportViewer();
-            customerReport = new ReportDocument();
-            if(Request.QueryString["NROTRAN"] != null)
-                ConfigureCrystalReports(Convert.ToInt32(Request.QueryString["NROTRAN"]));
+            if (Request.QueryString["NROTRAN"] != null)
+            {
+                int nroTran = Convert.ToInt32(Request.QueryString["NROTRAN"]);
+                GenerarPDFFactura(nroTran);
+            }
+            else
+            {
+                Response.Write("Parámetro NROTRAN requerido");
+            }
         }
 
-        private void ConfigureCrystalReports(int nroTran)
+        private void GenerarPDFFactura(int nroTran)
         {
             try
             {
-                string reportPath = Server.MapPath("Factura.rpt");
-
-
-                customerReport.PrintOptions.PaperSize = PaperSize.PaperA4;
-                customerReport.Load(reportPath);
-
-                int nroCedulon = BLL.Facturacion.getNroCedulon(nroTran);
-
+                // Obtener datos de la factura
                 DAL.Facturacion objFactu = BLL.Facturacion.getByNroTran(nroTran);
-
-                decimal monto_2 = objFactu.monto;
-                string vencimiento_2 = objFactu.fecha_transaccion.ToShortDateString();
-
-                string strCadena = Library.ArmoCBarra(
-                    "0", nroCedulon.ToString(), monto_2, vencimiento_2, 0, "0", "10");
-
+                int nroCedulon = BLL.Facturacion.getNroCedulon(nroTran);
                 Persona objPers = Persona.getByPk(Convert.ToInt64(objFactu.CUIT));
 
+                // Preparar datos para el generador PDF
+                var datosComprobante = new Helpers.ComprobanteData
+                {
+                    Municipio = "MUNICIPALIDAD DE VILLA ALLENDE ", 
+                    NroCedulon = string.Format("C0{0}", nroCedulon),
+                    Concepto = objFactu.des_categoria ?? "FACTURACIÓN",
+                    ContribuyenteNombre = objFactu.nombre,
+                    ContribuyenteCuit = objFactu.CUIT,
+                    Domicilio = objPers.direccion,
+                    Localidad = string.Format("({0}) {1} - {2}",
+                        objPers.codPostal,
+                        objPers.localidad,
+                        Utils.getProvincia(objPers.idProvincia)),
+                    FechaImpresion = DateTime.Now,
+                    Vencimiento = objFactu.vencimiento,
+                    Importe = objFactu.monto,
+                    CodigoBarraLargo = GenerarCodigoBarraLargo(nroCedulon, objFactu.monto, objFactu.vencimiento),
+                    CodigoBarraCorto = "*" + string.Format("C0{0}", nroCedulon) + "*"
+                };
 
-                //customerReport.SetParameterValue("strPeriodos", strPeriodos);
+                // Generar PDF
+                byte[] pdfBytes = Helpers.ComprobantePdfGenerator.Generar(datosComprobante,nroTran);
 
-                customerReport.SetParameterValue("CodigoBarraRapiPago", Library.ConvertToChar(strCadena));
-                customerReport.SetParameterValue("nroCodigoBarraRapiPago", strCadena);
-                customerReport.SetParameterValue("FechaImpresion", DateTime.Now.ToShortDateString());
-                customerReport.SetParameterValue("nroCedulon", string.Format("C0{0}", nroCedulon));
-                customerReport.SetParameterValue("categoriaDeuda", objFactu.des_categoria);
-                customerReport.SetParameterValue("CUIT", objFactu.CUIT);
-                customerReport.SetParameterValue("contribuyente", objFactu.nombre);
-                customerReport.SetParameterValue("direccion1", objPers.direccion);
-                customerReport.SetParameterValue("direccion2", string.Format("({0}) {1} - {2}",
-                    objPers.codPostal, objPers.localidad, 
-                    Utils.getProvincia(objPers.idProvincia)));
-                customerReport.SetParameterValue("obs", objFactu.observaciones.ToString());
-                customerReport.SetParameterValue("vencimiento", objFactu.vencimiento.ToShortDateString());
-                customerReport.SetParameterValue("importe", string.Format("{0:c}", objFactu.monto));
-                customerReport.SetParameterValue("codigoBarraCaja", "*" + string.Format("C0{0}", nroCedulon) + "*");
-
-                crview.ReportSource = customerReport;
-                crview.RefreshReport();
-                crview.DataBind();
-                customerReport.ExportToHttpResponse
-                    (CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, Response, false, "");
+                // Enviar PDF al navegador
+                EnviarPDFAlNavegador(pdfBytes, $"Factura_{nroCedulon}.pdf");
             }
-
             catch (Exception ex)
             {
-                System.Console.WriteLine("Error, no se pudo generar el Reporte " + ex.Message);
-                Response.Write("Hubo problemas con el cedulon, no se pudo generar el Reporte...");
+                System.Console.WriteLine("Error al generar el PDF: " + ex.Message);
+                Response.Write("Hubo problemas al generar la factura. Error: " + ex.Message);
             }
         }
 
+        private string GenerarCodigoBarraLargo(int nroCedulon, decimal monto, DateTime vencimiento)
+        {
+            // Usar la misma lógica que tenías con Crystal Reports
+            string vencimiento_str = vencimiento.ToShortDateString();
+            return Library.ArmoCBarra("0", nroCedulon.ToString(), monto, vencimiento_str, 0, "0", "10");
+        }
+
+        private void EnviarPDFAlNavegador(byte[] pdfBytes, string nombreArchivo)
+        {
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", $"inline; filename=\"{nombreArchivo}\"");
+            Response.AddHeader("Content-Length", pdfBytes.Length.ToString());
+            Response.BinaryWrite(pdfBytes);
+            Response.End();
+        }
     }
 }
+

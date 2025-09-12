@@ -1,4 +1,5 @@
-﻿using Facturacion.WSAfip;
+﻿//using Facturacion.WSAfip;
+using Facturacion.WSAFIP2;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace Facturacion.Secure
 {
     public partial class Facturacion : System.Web.UI.Page
     {
+
+        WSAFIPSoapClient ws = new WSAFIPSoapClient();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -71,7 +75,10 @@ namespace Facturacion.Secure
                 this.clear();
                 try
                 {
-                    personaReturn persona1 = new WSAFIPSoapClient().getPersona(
+
+                    //personaReturn person = new personaReturn();
+
+                    personaReturn persona1 =  ws.getPersona(
                         "10.0.0.9:3128", "mvelez", "generallee", 
                         cuit);
                     this.txtApellido.Value = persona1.persona.apellido;
