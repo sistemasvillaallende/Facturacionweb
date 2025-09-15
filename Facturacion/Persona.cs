@@ -60,7 +60,7 @@ namespace Facturacion
                     SqlCommand command = connection.CreateCommand();
                     command.CommandType = CommandType.Text;
                     command.CommandText = stringBuilder.ToString();
-                    command.Parameters.AddWithValue("@tipoPersona", (object)obj.tipoPersona);
+                    command.Parameters.AddWithValue("@tipoPersona", "FISICA");
                     command.Parameters.AddWithValue("@nombre", (object)obj.nombre);
                     command.Parameters.AddWithValue("@tipoDocumento", (object)obj.tipoDocumento);
                     command.Parameters.AddWithValue("@numeroDocumento", (object)obj.numeroDocumento);

@@ -56,12 +56,12 @@ namespace Facturacion.Helpers
                     // despues sacarlo con categoria_deuda
                     if (d.Concepto?.Trim().ToUpper() == "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
                     {
-                        //ACA TENGO QUE CAMBIAR LA URL CORRECTA
                         string url = $"http://localhost:52518/PagosOnLine/CertificadosHabilitacion.aspx?nro_transaccion={nroTransaccion}";
 
-                        var anchor = new Anchor("💳 PAGÁ ACÁ ➜", f12b) { Reference = url };
+                        // Crear font azul y subrayado
+                        var linkFont = new Font(f12b.BaseFont, 12, Font.UNDERLINE, BaseColor.BLUE);
 
-                        // OJO: envolver el Anchor en un Phrase
+                        var anchor = new Anchor("💳 PAGÁ ACÁ ➜", linkFont) { Reference = url };
                         var phrase = new Phrase();
                         phrase.Add(anchor);
 
@@ -71,7 +71,6 @@ namespace Facturacion.Helpers
                             HorizontalAlignment = Element.ALIGN_RIGHT,
                             VerticalAlignment = Element.ALIGN_MIDDLE
                         };
-
                         conceptoPago.AddCell(cellLink);
                     }
                     else

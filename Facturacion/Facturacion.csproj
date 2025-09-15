@@ -848,20 +848,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Connected Services\WSAFI\Facturacion.WSAFI.CmpResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\WSAFI\Facturacion.WSAFI.personaReturn.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <None Include="Connected Services\WSAFIP2\WSAfip.wsdl" />
-    <None Include="Connected Services\WSAFI\WSAfip.disco" />
-    <None Include="Connected Services\WSAFI\configuration91.svcinfo" />
-    <None Include="Connected Services\WSAFI\configuration.svcinfo" />
-    <None Include="Connected Services\WSAFI\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="LogIn.aspx" />
     <Content Include="Reportes\Factura.aspx" />
     <Content Include="Reportes\Facturacion.aspx" />
@@ -871,11 +858,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connected Services\WSAFIP2\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Connected Services\WSAFI\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -966,7 +948,6 @@
     <Content Include="App_Themes\plugins\datatables\extensions\TableTools\Readme.md" />
     <Content Include="App_Themes\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="App_Themes\plugins\input-mask\phone-codes\phone-codes.json" />
-    <None Include="Connected Services\WSAFI\WSAfip.wsdl" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
@@ -1000,7 +981,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\WSAFIP2\" />
-    <WCFMetadataStorage Include="Connected Services\WSAFI\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

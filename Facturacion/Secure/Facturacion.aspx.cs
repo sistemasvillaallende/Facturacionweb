@@ -183,9 +183,12 @@ namespace Facturacion.Secure
                 DAL.Usuario usuario = (DAL.Usuario)this.Session["user"];
                 DAL.Facturacion facturacion = new DAL.Facturacion();
                 Persona byPk = Persona.getByPk(Convert.ToInt64(this.txtCUIT.Text));
+                
                 if (byPk == null)
                 {
-                    byPk = (Persona)this.Session["PERSONA"];
+
+                    //byPk = (Persona)this.Session["PERSONA"];
+                    byPk = new Persona();
                     byPk.apellido = this.txtApellido.Value;
                     byPk.nombre = this.txtNombre.Value;
                     byPk.tipoDocumento = this.txtTipoDoc.Value;
