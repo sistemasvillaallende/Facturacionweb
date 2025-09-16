@@ -215,17 +215,21 @@ namespace Facturacion.Secure
             if (e.Row.RowType != DataControlRowType.DataRow)
                 return;
             DAL.Facturacion dataItem = (DAL.Facturacion)e.Row.DataItem;
-            Image control1 = (Image)e.Row.FindControl("imgPagado");
+            Image imgPagado = (Image)e.Row.FindControl("imgPagado");
+            Image imgNoPagado = (Image)e.Row.FindControl("imgNoPagado");
+
             ImageButton control2 = (ImageButton)e.Row.FindControl("imgImprimir");
             ImageButton control3 = (ImageButton)e.Row.FindControl("imgDelete");
             if (dataItem.pagado)
             {
-                control1.ImageUrl = "../App_Themes/dist/img/Si.png";
+                imgPagado.Visible = true;
+                imgNoPagado.Visible = false;
                 control3.Visible = false;
             }
             else
             {
-                control1.ImageUrl = "../App_Themes/dist/img/No.png";
+                imgPagado.Visible = false;
+                imgNoPagado.Visible = true;
                 control3.Visible = true;
             }
             if (Convert.ToDateTime(dataItem.vencimiento.ToShortDateString()) >= Convert.ToDateTime(DateTime.Now.ToShortDateString()))
@@ -262,7 +266,7 @@ namespace Facturacion.Secure
                     string end = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.GetEncoding(0)).ReadToEnd();
                     if (!end.Contains("error"))
                     {
-                        CUIT cuit2 = JsonConvert.DeserializeObject<CUIT>(end);
+                        CUIT cuit2 =    JsonConvert.DeserializeObject<CUIT>(end);
                         if (cuit2.data.Count == 1)
                         {
                             Utils.update(cuit1.dni, cuit2.data[0].ToString());

@@ -19,59 +19,16 @@
             filter: alpha(opacity=50);
             opacity: 0.7;
         }
+        body, p, a, span, h1, h2, h3, h4, h5, h6, div, strong, table, th, td{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body class="skin-blue sidebar-mini">
     <form id="form1" runat="server">
-        <header class="main-header">
 
-            <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-fixed-top" role="navigation" style="margin-left: 0px;">
-                <%--                <div class="navbar-custom-menu">--%>
-                <ul class="nav navbar-nav">
-                    <li class="pull-left">
-                        <!-- Logo -->
-                        <a href="Facturacion.aspx" class="logo" style="width: 420px;">
-                            <!-- mini logo for sidebar mini 50x50 pixels -->
-                            <span class="logo-mini"><b>M</b>VA</span>
-                            <!-- logo for regular state and mobile devices -->
-                            <span class="logo-lg"><b>Municipalidad de</b> Villa Allende</span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 5px; padding-bottom: 5px;">
-                            <img src="../App_Themes/dist/img/Usuario.png" style="height: 30px;" class="img-circle" alt="User Image" />
-                            <span id="spanUsuario" runat="server"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="../App_Themes/dist/img/Usuario.png" class="img-circle" alt="User Image" />
-                                <p id="spanUsuario2" runat="server"></p>
-                                <small style="color: white;" id="spanOficina" runat="server"></small>
-
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Datos Personales</a>
-                                </div>
-                                <div class="pull-right">
-                                    <asp:Button ID="btnCerrarSesion" class="btn btn-default btn-flat" runat="server"
-                                        Text="Cerrar Sesion" OnClick="btnCerrarSesion_Click" />
-
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <%--                </div>--%>
-            </nav>
-        </header>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
 

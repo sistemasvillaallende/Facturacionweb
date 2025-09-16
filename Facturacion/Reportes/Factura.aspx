@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Factura.aspx.cs" Inherits="Facturacion.Reportes.Factura1" %>
+﻿Q<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Factura.aspx.cs" Inherits="Facturacion.Reportes.Factura1" %>
 
 <!DOCTYPE html>
 
