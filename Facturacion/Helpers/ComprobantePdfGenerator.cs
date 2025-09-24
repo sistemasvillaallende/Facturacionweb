@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
+using iTextSharp.text.html.simpleparser;
 
 namespace Facturacion.Helpers
 {
@@ -144,6 +145,35 @@ namespace Facturacion.Helpers
                     cupones.AddCell(BloqueCupon("CUPON CONTRIBUYENTE", d, writer, f10, f10b, ar));
 
                     doc.Add(cupones);
+
+                    if (!string.IsNullOrWhiteSpace(d.Observaciones))
+                    {
+                        doc.Add(new Paragraph(" ", f10)); // Espacio en blanco
+
+                        // Título "Observaciones" en negrita
+                        var tituloObs = new Paragraph("OBSERVACIONES:", f10b);
+                        doc.Add(tituloObs);
+
+                        try
+                        {
+                            // Renderizar HTML en el PDF usando HTMLWorker
+                            using (var htmlReader = new StringReader(d.Observaciones))
+                            {
+                                var htmlElements = HTMLWorker.ParseToList(htmlReader, null);
+                                foreach (var htmlElement in htmlElements)
+                                {
+                                    doc.Add(htmlElement);
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // Si falla el parsing de HTML, mostrar como texto plano
+                            var contenidoObs = new Paragraph(d.Observaciones, f10);
+                            contenidoObs.Alignment = Element.ALIGN_JUSTIFIED;
+                            doc.Add(contenidoObs);
+                        }
+                    }
 
                     doc.Close();
                     return ms.ToArray();

@@ -19,5 +19,6 @@ namespace Facturacion.Helpers
         public decimal Importe { get; set; }
         public string CodigoBarraLargo { get; set; }
         public string CodigoBarraCorto { get; set; }
+        public string Observaciones { get; set; }
     }
 }

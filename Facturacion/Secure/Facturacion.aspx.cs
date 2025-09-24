@@ -206,6 +206,7 @@ namespace Facturacion.Secure
                 }
                 else
                     Persona.update(this.txtMail.Text, this.txtCel.Text, long.Parse(this.txtCUIT.Text), this.txtModalDir.Text, this.txtModalLocalidad.Text, this.txtMModalCP.Text, int.Parse(this.DDLModalProvincia.SelectedItem.Value));
+
                 long num = BLL.Facturacion.insertFacturacion(Convert.ToDecimal(this.txtMonto.Text), Convert.ToInt32(this.DDLCatDeuda.SelectedItem.Value), this.txtNombre.Value, this.txtObs.Text, usuario.NOMBRE, usuario.COD_USUARIO, usuario.cod_oficina, byPk.CUIT);
                 this.clear();
                 this.divBuscar.Visible = true;
