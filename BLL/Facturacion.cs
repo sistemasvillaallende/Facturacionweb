@@ -72,7 +72,15 @@ namespace BLL
                 ctasctesFactu.periodo = str;
                 ctasctesFactu.tipo_transaccion = 1;
                 DateTime dateTime = DateTime.Now;
-                ctasctesFactu.vencimiento = dateTime.AddDays(15.0);
+
+                if (categoria_deuda is 415) {
+                    ctasctesFactu.vencimiento = dateTime.AddDays(30.0);
+                }
+                else
+                {
+                    ctasctesFactu.vencimiento = dateTime.AddDays(15.0);
+                }
+
                 CTASCTES_FACTU.insert(ctasctesFactu);
                 Cedulones oCedulon = new Cedulones();
                 dateTime = DateTime.Now;

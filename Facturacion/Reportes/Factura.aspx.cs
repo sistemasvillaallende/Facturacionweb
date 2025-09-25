@@ -38,7 +38,7 @@ namespace Facturacion.Reportes
                 // Preparar datos para el generador PDF
                 var datosComprobante = new Helpers.ComprobanteData
                 {
-                    Municipio = "MUNICIPALIDAD DE VILLA ALLENDE ", 
+                    Municipio = "MUNICIPALIDAD DE VILLA ALLENDE ",
                     NroCedulon = string.Format("C0{0}", nroCedulon),
                     Concepto = objFactu.des_categoria ?? "FACTURACIÓN",
                     ContribuyenteNombre = objFactu.nombre,
@@ -52,10 +52,11 @@ namespace Facturacion.Reportes
                     Vencimiento = objFactu.vencimiento,
                     Importe = objFactu.monto,
                     CodigoBarraLargo = GenerarCodigoBarraLargo(nroCedulon, objFactu.monto, objFactu.vencimiento),
-                    CodigoBarraCorto = "*" + string.Format("C0{0}", nroCedulon) + "*"
+                    CodigoBarraCorto = "*" + string.Format("C0{0}", nroCedulon) + "*",
+                    Observaciones = objFactu.observaciones
                 };
 
-                // Generar PDF
+                // Generar PDF    
                 byte[] pdfBytes = Helpers.ComprobantePdfGenerator.Generar(datosComprobante,nroTran);
 
                 // Enviar PDF al navegador
