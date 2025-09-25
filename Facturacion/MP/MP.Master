@@ -19,8 +19,19 @@
             filter: alpha(opacity=50);
             opacity: 0.7;
         }
-        body, p, a, span, h1, h2, h3, h4, h5, h6, div, strong, table, th, td{
+
+        body, p, a, span, h1, h2, h3, h4, h5, h6, div, strong, table, th, td {
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+
+        .table-modern {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 47%) !important;
+        }
+        tbody {
+            padding: 20px;
+            display:block;
         }
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -28,10 +39,35 @@
 </head>
 <body class="skin-blue sidebar-mini">
     <form id="form1" runat="server">
-
+        <div id="remote-header"></div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
+        <!-- INICIO HEADER: Colocar esto al final  antes del terminar el body-->
+        <script>
+            (async () => {
+                try {
 
+                    // Cargar el CSS del header
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'http://10.0.0.24/header_back/header.css';
+                    document.head.appendChild(link);
+
+                    // Cargar el HTML del header
+                    const response = await fetch('http://10.0.0.24/header_back/index.html');
+                    const htmlText = await response.text();
+                    document.getElementById('remote-header').innerHTML = htmlText;
+
+                    // Cargar y ejecutar el JS del header
+                    const script = document.createElement('script');
+                    script.src = 'http://10.0.0.24/header_back/header.js';
+                    script.type = 'text/javascript';
+                    document.body.appendChild(script);
+                } catch (error) {
+                    console.error('Error al cargar el header remoto:', error);
+                }
+            })();
+        </script>
     </form>
 </body>
 </html>

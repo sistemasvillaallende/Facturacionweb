@@ -18,7 +18,7 @@ namespace DAL
     {
       try
       {
-        return new SqlConnection(ConfigurationManager.ConnectionStrings["DBMain"].ConnectionString);
+        return new SqlConnection(ConfigurationManager.ConnectionStrings["DBMainFactu"].ConnectionString);
       }
       catch (Exception ex)
       {
@@ -30,7 +30,7 @@ namespace DAL
     {
       try
       {
-        return new SqlConnection(ConfigurationManager.ConnectionStrings["DBMesa"].ConnectionString);
+        return new SqlConnection(ConfigurationManager.ConnectionStrings["DBMesaFactu"].ConnectionString);
       }
       catch (Exception ex)
       {

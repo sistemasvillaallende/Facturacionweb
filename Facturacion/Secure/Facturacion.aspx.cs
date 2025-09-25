@@ -1,6 +1,9 @@
 ﻿//using Facturacion.WSAfip;
-using Facturacion.WSAFIP2;
+using DAL;
+using Facturacion.WSAfip;
+
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,18 +26,32 @@ namespace Facturacion.Secure
         {
             try
             {
-
-                if (this.Session["USER"] == null)
-                    this.Response.Redirect("../LogIn.aspx");
-                if (this.IsPostBack)
-                    return;
-                DAL.Usuario usuario = (DAL.Usuario)this.Session["user"];
-
-                this.DDLCatDeuda.DataValueField = "cod_categoria";
-                this.DDLCatDeuda.DataTextField = "des_categoria";
-                this.DDLCatDeuda.DataSource = (object)BLL.CATEGORIA_DEUDA.getByOficina(usuario.cod_oficina);
-                this.DDLCatDeuda.DataBind();
-                this.fillFacturas();
+                if (!IsPostBack)
+                {
+                    if (Request.Cookies["VABack.CIDI"] == null)
+                        Response.Redirect("http://10.0.0.24/siimva/login.aspx");
+                    else
+                    {
+                        UsuarioLoginCIDI usu = null;
+                        string baseApi = System.Configuration.ConfigurationManager.AppSettings["BaseApi"];
+                        var options = new RestClientOptions(baseApi);
+                        var client = new RestClient(options);
+                        var request = new RestRequest(string.Format(
+                            "/CiDiLogin/Usuario/GetUsuarioLogueado?hash={0}",
+                            Request.Cookies["VABack.CIDI"]["SesionHash"], Method.Get));
+                        RestResponse response = client.Execute(request);
+                        usu = JsonConvert.DeserializeObject<UsuarioLoginCIDI>(response.Content);
+                        hCodOficina.Value = usu.cod_oficina.ToString();
+                        hCodUsuario.Value = usu.cod_usuario.ToString();
+                        hNombre.Value = usu.nombre;
+                        this.DDLCatDeuda.DataValueField = "cod_categoria";
+                        this.DDLCatDeuda.DataTextField = "des_categoria";
+                        this.DDLCatDeuda.DataSource = (object)BLL.CATEGORIA_DEUDA.getByOficina(
+                            usu.cod_oficina);
+                        this.DDLCatDeuda.DataBind();
+                        this.fillFacturas();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -47,7 +64,9 @@ namespace Facturacion.Secure
         {
             try
             {
-                this.gvFacturas.DataSource = (object)BLL.Facturacion.getByOficina(((DAL.Usuario)this.Session["user"]).cod_oficina);
+                this.gvFacturas.DataSource = (object)
+                    BLL.Facturacion.getByOficina(
+                        int.Parse(hCodOficina.Value));
                 this.gvFacturas.DataBind();
             }
             catch (Exception ex)
@@ -78,8 +97,8 @@ namespace Facturacion.Secure
 
                     //personaReturn person = new personaReturn();
 
-                    personaReturn persona1 =  ws.getPersona(
-                        "10.0.0.9:3128", "mvelez", "generallee", 
+                    personaReturn persona1 = ws.getPersona(
+                        "10.0.0.9:3128", "mvelez", "generallee",
                         cuit);
                     this.txtApellido.Value = persona1.persona.apellido;
                     this.txtNombre.Value = persona1.persona.nombre;
@@ -140,7 +159,7 @@ namespace Facturacion.Secure
                         persona2.tipoDocumento = persona1.persona.tipoDocumento;
                         persona2.tipoPersona = persona1.persona.tipoPersona;
                     }
-                    this.Session["PERSONA"] = (object)persona2;
+                    //this.Session["PERSONA"] = (object)persona2;
                 }
                 catch (Exception ex)
                 {
@@ -180,10 +199,11 @@ namespace Facturacion.Secure
         {
             try
             {
-                DAL.Usuario usuario = (DAL.Usuario)this.Session["user"];
+
                 DAL.Facturacion facturacion = new DAL.Facturacion();
-                Persona byPk = Persona.getByPk(Convert.ToInt64(this.txtCUIT.Text));
-                
+                Persona byPk = Persona.getByPk(
+                    Convert.ToInt64(this.txtCUIT.Text));
+
                 if (byPk == null)
                 {
 
@@ -206,7 +226,15 @@ namespace Facturacion.Secure
                 }
                 else
                     Persona.update(this.txtMail.Text, this.txtCel.Text, long.Parse(this.txtCUIT.Text), this.txtModalDir.Text, this.txtModalLocalidad.Text, this.txtMModalCP.Text, int.Parse(this.DDLModalProvincia.SelectedItem.Value));
-                long num = BLL.Facturacion.insertFacturacion(Convert.ToDecimal(this.txtMonto.Text), Convert.ToInt32(this.DDLCatDeuda.SelectedItem.Value), this.txtNombre.Value, this.txtObs.Text, usuario.NOMBRE, usuario.COD_USUARIO, usuario.cod_oficina, byPk.CUIT);
+                long num = BLL.Facturacion.insertFacturacion(
+                    Convert.ToDecimal(this.txtMonto.Text), 
+                    Convert.ToInt32(this.DDLCatDeuda.SelectedItem.Value), 
+                    this.txtNombre.Value, 
+                    this.txtObs.Text,
+                    hNombre.Value, 
+                    Convert.ToInt32(hCodUsuario.Value), 
+                    Convert.ToInt32(hCodOficina.Value), 
+                    byPk.CUIT);
                 this.clear();
                 this.divBuscar.Visible = true;
                 this.divNuevo.Visible = false;
@@ -276,7 +304,7 @@ namespace Facturacion.Secure
                     string end = new StreamReader(httpWebRequest.GetResponse().GetResponseStream(), Encoding.GetEncoding(0)).ReadToEnd();
                     if (!end.Contains("error"))
                     {
-                        CUIT cuit2 =    JsonConvert.DeserializeObject<CUIT>(end);
+                        CUIT cuit2 = JsonConvert.DeserializeObject<CUIT>(end);
                         if (cuit2.data.Count == 1)
                         {
                             Utils.update(cuit1.dni, cuit2.data[0].ToString());
