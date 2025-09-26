@@ -918,6 +918,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Helpers\ComprobanteData.cs" />
     <Compile Include="Helpers\ComprobantePdfGenerator.cs" />
+    <Compile Include="Helpers\Footer.cs" />
     <Compile Include="LogIn.aspx.cs">
       <DependentUpon>LogIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

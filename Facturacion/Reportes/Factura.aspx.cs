@@ -56,8 +56,8 @@ namespace Facturacion.Reportes
                     Observaciones = objFactu.observaciones
                 };
 
-                // Generar PDF    
-                byte[] pdfBytes = Helpers.ComprobantePdfGenerator.Generar(datosComprobante,nroTran);
+                // TRAER CORRECTAMENTE EL SUBSISTEMA DESPUES  
+                byte[] pdfBytes = Helpers.ComprobantePdfGenerator.Generar(datosComprobante,nroTran,2);
 
                 // Enviar PDF al navegador
                 EnviarPDFAlNavegador(pdfBytes, $"Factura_{nroCedulon}.pdf");

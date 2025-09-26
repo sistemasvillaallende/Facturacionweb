@@ -92,7 +92,7 @@ namespace DAL
       }
       catch (Exception ex)
       {
-        throw new Exception(ex.Message + " Error en la Autenticación!!!.");
+         throw new Exception(ex.Message + " Error en la Autenticación!!!.");
       }
       finally
       {
