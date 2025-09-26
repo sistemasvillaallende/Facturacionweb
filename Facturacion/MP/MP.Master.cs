@@ -12,6 +12,8 @@ namespace Facturacion.MP
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Cookies["VABack.CIDI"] == null)
+                Response.Redirect("http://10.0.0.24/siimva/login.aspx");
             //try
             //{
             //    if (this.Session["USER"] == null)

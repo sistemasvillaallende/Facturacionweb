@@ -117,13 +117,13 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgb(0 0 0 / 47%) !important;
         }
 
         .section-title {
             color: #333;
-            font-size: 1.5rem;
-            font-weight: 300;
+            font-size: 24px;
+            font-weight: 500;
             margin-bottom: 25px;
             padding-bottom: 10px;
             border-bottom: 2px solid #e9ecef;
@@ -193,6 +193,9 @@ s
         <va-header-general base-url="http://10.0.0.24/header_back"></va-header-general>
         <link href="http://10.0.0.24/header_back/header.css" rel="stylesheet" />
         <!-- Alertas de Error -->
+        <asp:HiddenField ID="hCodOficina" runat="server" />
+        <asp:HiddenField ID="hCodUsuario" runat="server" />
+        <asp:HiddenField ID="hNombre" runat="server" />
         <div class="row" id="divError" runat="server" visible="false">
             <div class="col-md-12">
                 <div class="alert alert-danger" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);">
@@ -205,10 +208,17 @@ s
             </div>
         </div>
 
-        <div id="divBuscar" runat="server">
+        <div id="divBuscar" runat="server" style="margin-top: 120px;">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="action-buttons" style="text-align: left; padding: 10px 0;">
+                <div class="col-md-9">
+                    <div class="search-container">
+                        <i class="glyphicon glyphicon-search search-icon"></i>
+                        <asp:TextBox ID="TextBox1" CssClass="form-control search-input"
+                            placeholder="Buscar facturas por contribuyente, concepto o monto..." runat="server"></asp:TextBox>
+                    </div>
+                </div>
+                <div class="col-md-3" style="text-align: right;">
+                    <div class="action-buttons" style="text-align: right; padding: 10px 0; padding-top: 5px;">
                         <button type="button" id="btnAddFactu" class="btn btn-primary-modern btn-modern" runat="server"
                             onserverclick="btnAddFactu_ServerClick">
                             <i class="glyphicon glyphicon-plus-sign" aria-hidden="true"></i>&nbsp;Nueva Factura
@@ -216,14 +226,6 @@ s
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="search-container">
-                        <i class="glyphicon glyphicon-search search-icon"></i>
-                        <asp:TextBox ID="TextBox1" CssClass="form-control search-input"
-                            placeholder="Buscar facturas por contribuyente, concepto o monto..." runat="server"></asp:TextBox>
-                    </div>
-                </div>            </div>
             <div class="row">
                 <div class="col-md-12">
                     <asp:GridView ID="gvFacturas" CssClass="table table-striped table-modern"
@@ -250,7 +252,7 @@ s
                                         ImageUrl="~/App_Themes/dist/img/NoPagado.png"
                                         Height="23" runat="server" />
                                     <asp:Image ID="imgPagado" Visible="false"
-                                        ImageUrl="~/App_Themes/dist/img/Pagado.png" 
+                                        ImageUrl="~/App_Themes/dist/img/Pagado.png"
                                         Height="23" runat="server" />
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -282,7 +284,7 @@ s
             </div>
         </div>
 
-        <div id="divNuevo" runat="server" visible="false" class="form-section">
+        <div id="divNuevo" runat="server" visible="false" class="form-section" style="margin-top: 120px;">
             <h2 class="section-title">📝 Nueva Factura</h2>
 
             <!-- Sección CUIT/CUIL -->
@@ -292,6 +294,7 @@ s
                     <div class="col-md-8">
                         <div class="input-group">
                             <asp:TextBox ID="txtCUIT" TextMode="Number" CssClass="form-control"
+                                Style="height: 44px;"
                                 placeholder="Ingrese CUIT/CUIL (sin puntos ni guiones)" runat="server"></asp:TextBox>
                             <span class="input-group-btn">
                                 <button class="btn btn-primary-modern btn-modern" type="button" id="btnAfip" runat="server"

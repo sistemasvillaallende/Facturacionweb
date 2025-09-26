@@ -1,6 +1,4 @@
 ﻿using BLL;
-using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

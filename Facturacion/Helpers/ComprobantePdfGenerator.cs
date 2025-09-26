@@ -10,6 +10,7 @@ using iTextSharp.text.html.simpleparser;
 using DAL;
 using System.Configuration;
 
+
 namespace Facturacion.Helpers
 {
     public class ComprobantePdfGenerator

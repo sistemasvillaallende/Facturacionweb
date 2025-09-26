@@ -8,26 +8,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Facturacion.WSAFIP2 {
+namespace Facturacion.WSAfip {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WSAFIP2.WSAFIPSoap")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WSAfip.WSAFIPSoap")]
     public interface WSAFIPSoap {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getPersona", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Facturacion.WSAFIP2.personaReturn getPersona(string dirProxy, string proxyUser, string proxyPassword, long CUIT);
+        Facturacion.WSAfip.personaReturn getPersona(string dirProxy, string proxyUser, string proxyPassword, long CUIT);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/getPersona", ReplyAction="*")]
-        System.Threading.Tasks.Task<Facturacion.WSAFIP2.personaReturn> getPersonaAsync(string dirProxy, string proxyUser, string proxyPassword, long CUIT);
+        System.Threading.Tasks.Task<Facturacion.WSAfip.personaReturn> getPersonaAsync(string dirProxy, string proxyUser, string proxyPassword, long CUIT);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/consultaComprobante", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Facturacion.WSAFIP2.CmpResponse consultaComprobante(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta);
+        Facturacion.WSAfip.CmpResponse consultaComprobante(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/consultaComprobante", ReplyAction="*")]
-        System.Threading.Tasks.Task<Facturacion.WSAFIP2.CmpResponse> consultaComprobanteAsync(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta);
+        System.Threading.Tasks.Task<Facturacion.WSAfip.CmpResponse> consultaComprobanteAsync(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta);
     }
     
     /// <remarks/>
@@ -2441,12 +2441,12 @@ namespace Facturacion.WSAFIP2 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface WSAFIPSoapChannel : Facturacion.WSAFIP2.WSAFIPSoap, System.ServiceModel.IClientChannel {
+    public interface WSAFIPSoapChannel : Facturacion.WSAfip.WSAFIPSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class WSAFIPSoapClient : System.ServiceModel.ClientBase<Facturacion.WSAFIP2.WSAFIPSoap>, Facturacion.WSAFIP2.WSAFIPSoap {
+    public partial class WSAFIPSoapClient : System.ServiceModel.ClientBase<Facturacion.WSAfip.WSAFIPSoap>, Facturacion.WSAfip.WSAFIPSoap {
         
         public WSAFIPSoapClient() {
         }
@@ -2467,19 +2467,19 @@ namespace Facturacion.WSAFIP2 {
                 base(binding, remoteAddress) {
         }
         
-        public Facturacion.WSAFIP2.personaReturn getPersona(string dirProxy, string proxyUser, string proxyPassword, long CUIT) {
+        public Facturacion.WSAfip.personaReturn getPersona(string dirProxy, string proxyUser, string proxyPassword, long CUIT) {
             return base.Channel.getPersona(dirProxy, proxyUser, proxyPassword, CUIT);
         }
         
-        public System.Threading.Tasks.Task<Facturacion.WSAFIP2.personaReturn> getPersonaAsync(string dirProxy, string proxyUser, string proxyPassword, long CUIT) {
+        public System.Threading.Tasks.Task<Facturacion.WSAfip.personaReturn> getPersonaAsync(string dirProxy, string proxyUser, string proxyPassword, long CUIT) {
             return base.Channel.getPersonaAsync(dirProxy, proxyUser, proxyPassword, CUIT);
         }
         
-        public Facturacion.WSAFIP2.CmpResponse consultaComprobante(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta) {
+        public Facturacion.WSAfip.CmpResponse consultaComprobante(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta) {
             return base.Channel.consultaComprobante(fecha, metodo, nroComprobante, tipoComprobante, codAutorizacion, cuitEmisor, importe, puntoVenta);
         }
         
-        public System.Threading.Tasks.Task<Facturacion.WSAFIP2.CmpResponse> consultaComprobanteAsync(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta) {
+        public System.Threading.Tasks.Task<Facturacion.WSAfip.CmpResponse> consultaComprobanteAsync(System.DateTime fecha, string metodo, long nroComprobante, int tipoComprobante, string codAutorizacion, long cuitEmisor, double importe, int puntoVenta) {
             return base.Channel.consultaComprobanteAsync(fecha, metodo, nroComprobante, tipoComprobante, codAutorizacion, cuitEmisor, importe, puntoVenta);
         }
     }

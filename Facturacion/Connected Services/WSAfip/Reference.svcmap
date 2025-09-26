@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="884e4aa0-96dc-426d-a5e4-ad80298ce7ad" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="5c5e3961-dbac-4d59-beae-e5d3f19698bc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,11 +22,10 @@
     <MetadataSource Address="http://10.0.0.200/WSAfip/WSAfip.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="WSAfip.wsdl" MetadataType="Wsdl" ID="dd57651f-f0a3-4f00-9eb1-7ab250260520" SourceId="1" SourceUrl="http://10.0.0.200/WSAfip/WSAfip.asmx?wsdl" />
-    <MetadataFile FileName="WSAfip.disco" MetadataType="Disco" ID="8c964487-877a-42f7-814a-dee32748cc3c" SourceId="1" SourceUrl="http://10.0.0.200/WSAfip/WSAfip.asmx?disco" />
+    <MetadataFile FileName="WSAfip.wsdl" MetadataType="Wsdl" ID="40aa34e1-0214-4d1b-9a57-e124eea5eb06" SourceId="1" SourceUrl="http://10.0.0.200/WSAfip/WSAfip.asmx?wsdl" />
+    <MetadataFile FileName="WSAfip.disco" MetadataType="Disco" ID="15842be5-bd94-4db4-93f9-8e8db40ba44c" SourceId="1" SourceUrl="http://10.0.0.200/WSAfip/WSAfip.asmx?disco" />
   </Metadata>
   <Extensions>
-    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
     <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
   </Extensions>
 </ReferenceGroup>
