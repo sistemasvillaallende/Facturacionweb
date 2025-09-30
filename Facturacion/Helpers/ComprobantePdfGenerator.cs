@@ -917,10 +917,10 @@ namespace Facturacion.Helpers
 
         private static PdfPTable GetLinkPago(ComprobanteData d, int nroTransaccion)
         {
-            if (d.Concepto?.Trim().ToUpper() != "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
-            {
-                return null;
-            }
+            //if (d.Concepto?.Trim().ToUpper() != "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
+            //{
+            //    return null;
+            //}
 
             PdfPTable tableContainer = new PdfPTable(1) { WidthPercentage = 100 };
 
