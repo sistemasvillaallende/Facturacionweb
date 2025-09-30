@@ -47,12 +47,17 @@ namespace Facturacion.Helpers
                     doc.Add(GetTitular(d,subsistema));
                    
                     doc.Add(GetDetalle(d,nroTransaccion));
-                    doc.Add(salto2);
+
+                    var linkPago = GetLinkPago(d, nroTransaccion);
+                    if (linkPago != null)
+                    {
+                        doc.Add(linkPago);
+                        doc.Add(salto);
+                    }
 
                     if (!string.IsNullOrWhiteSpace(d.Observaciones))
                     {
                         doc.Add(GetTituloObservaciones());
-                        doc.Add(salto);
                         doc.Add(GetContenidoObservaciones(d.Observaciones));
                         doc.Add(salto);
                     }
@@ -485,7 +490,7 @@ namespace Facturacion.Helpers
         private static IElement GetContenidoObservaciones(string observaciones)
         {
             Paragraph contenedor = new Paragraph();
-            contenedor.SpacingBefore = 10f;
+            contenedor.SpacingBefore = 1f;
 
             if (!string.IsNullOrWhiteSpace(observaciones))
             {
@@ -574,31 +579,6 @@ namespace Facturacion.Helpers
             };
             table.AddCell(cellConcepto);
 
-            // Link de pago (si corresponde)
-            if (d.Concepto?.Trim().ToUpper() == "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
-            {
-                string url = $"https://vecino.villaallende.gov.ar/PagosOnLine/CertificadosHabilitacion.aspx?nro_transaccion={nroTransaccion}";
-                var linkFont = new Font(_encabezado.BaseFont, 12, Font.UNDERLINE, BaseColor.BLUE);
-                var anchor = new Anchor("💳 PAGÁ ACÁ ➜", linkFont) { Reference = url };
-                var phrase = new Phrase();
-                phrase.Add(anchor);
-
-                PdfPCell cellLink = new PdfPCell(phrase)
-                {
-                    BorderWidth = 0,
-                    HorizontalAlignment = Element.ALIGN_RIGHT,
-                    VerticalAlignment = Element.ALIGN_MIDDLE,
-                    PaddingBottom = 10,
-                    PaddingTop = 10
-                };
-                table.AddCell(cellLink);
-            }
-            else
-            {
-                table.AddCell(new PdfPCell(new Paragraph("", _standardFont)) { BorderWidth = 0 });
-            }
-
-            // Fecha de impresión
             table.AddCell(new PdfPCell(new Paragraph($"Fecha de Impresión: {d.FechaImpresion:dd/MM/yyyy}", _standardFont))
             {
                 BorderWidth = 0,
@@ -660,11 +640,9 @@ namespace Facturacion.Helpers
 
         private static IElement GetCodigoBarras(ComprobanteData d, PdfWriter writer)
         {
-            // Crear un contenedor para el número de cedulón y el código de barras
             var contenedor = new Paragraph();
             contenedor.Alignment = Element.ALIGN_RIGHT;
 
-            // Agregar número de cedulón arriba con el mismo tamaño que el número del código de barras
             if (!string.IsNullOrWhiteSpace(d.NroCedulon))
             {
                 var parrafoCedulon = new Paragraph($"Nº Cedulón: {d.NroCedulon}", _standardFont);
@@ -707,7 +685,6 @@ namespace Facturacion.Helpers
         {
             var container = new PdfPTable(1) { WidthPercentage = 100 };
 
-            // Título
             PdfPCell titleCell = new PdfPCell(new Paragraph("OBSERVACIONES:", _subtitulo))
             {
                 BorderWidth = 0,
@@ -718,7 +695,6 @@ namespace Facturacion.Helpers
 
             try
             {
-                // Intentar procesar HTML
                 using (var htmlReader = new StringReader(d.Observaciones))
                 {
                     var htmlElements = HTMLWorker.ParseToList(htmlReader, null);
@@ -761,166 +737,6 @@ namespace Facturacion.Helpers
             return linea;
         }
 
-        //private static PdfPTable GetCupones(ComprobanteData d, PdfWriter writer, CultureInfo ar)
-        //{
-        //    PdfPTable cupones = new PdfPTable(2) { WidthPercentage = 100 };
-        //    cupones.SetWidths(new float[] { 50, 50 });
-
-        //    // Cupón Municipalidad
-        //    cupones.AddCell(CrearCupon("CUPÓN MUNICIPALIDAD", d, writer, ar));
-
-        //    // Cupón Contribuyente  
-        //    cupones.AddCell(CrearCupon("CUPÓN CONTRIBUYENTE", d, writer, ar));
-
-        //    return cupones;
-        //}
-
-        //private static PdfPCell CrearCupon(string titulo, ComprobanteData d, PdfWriter writer, CultureInfo ar)
-        //{
-        //    PdfPTable cupon = new PdfPTable(1) { WidthPercentage = 100 };
-
-        //    // Título del cupón
-        //    PdfPCell titleCell = new PdfPCell(new Paragraph(titulo, _subtitulo))
-        //    {
-        //        BorderWidth = 1,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 8,
-        //        PaddingTop = 8,
-        //        BackgroundColor = BaseColor.LIGHT_GRAY
-        //    };
-        //    cupon.AddCell(titleCell);
-
-        //    // Datos del contribuyente
-        //    cupon.AddCell(new PdfPCell(new Paragraph(d.ContribuyenteNombre, _standardFont))
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        PaddingLeft = 5,
-        //        PaddingBottom = 3,
-        //        PaddingTop = 3
-        //    });
-
-        //    cupon.AddCell(new PdfPCell(new Paragraph($"CUIT: {d.ContribuyenteCuit}", _standardFont))
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        PaddingLeft = 5,
-        //        PaddingBottom = 3,
-        //        PaddingTop = 3
-        //    });
-
-        //    cupon.AddCell(new PdfPCell(new Paragraph(d.Domicilio, _standardFont))
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        PaddingLeft = 5,
-        //        PaddingBottom = 3,
-        //        PaddingTop = 3
-        //    });
-
-        //    cupon.AddCell(new PdfPCell(new Paragraph(d.Localidad, _standardFont))
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        PaddingLeft = 5,
-        //        PaddingBottom = 8,
-        //        PaddingTop = 3
-        //    });
-
-        //    // Tabla vencimiento/importe del cupón
-        //    PdfPTable tablaVencImporte = new PdfPTable(2);
-        //    tablaVencImporte.SetWidths(new float[] { 50, 50 });
-
-        //    tablaVencImporte.AddCell(new PdfPCell(new Paragraph("Vencimiento", _subtitulo))
-        //    {
-        //        BorderWidth = 1,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 5,
-        //        PaddingTop = 5
-        //    });
-
-        //    tablaVencImporte.AddCell(new PdfPCell(new Paragraph("Importe", _subtitulo))
-        //    {
-        //        BorderWidth = 1,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 5,
-        //        PaddingTop = 5
-        //    });
-
-        //    tablaVencImporte.AddCell(new PdfPCell(new Paragraph(d.Vencimiento.ToString("dd/MM/yyyy"), _encabezado))
-        //    {
-        //        BorderWidth = 1,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 10,
-        //        PaddingTop = 10
-        //    });
-
-        //    tablaVencImporte.AddCell(new PdfPCell(new Paragraph(d.Importe.ToString("$ #,##0.00", ar), _encabezado))
-        //    {
-        //        BorderWidth = 1,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 10,
-        //        PaddingTop = 10
-        //    });
-
-        //    cupon.AddCell(new PdfPCell(tablaVencImporte)
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        Padding = 0
-        //    });
-
-        //    // Código de barras corto si existe
-        //    if (!string.IsNullOrWhiteSpace(d.CodigoBarraCorto))
-        //    {
-        //        try
-        //        {
-        //            var imgBarraCorta = CrearBarcodeCode39Or128(d.CodigoBarraCorto, writer, 36f, 0.9f, true);
-        //            if (imgBarraCorta != null)
-        //            {
-        //                PdfPCell cellImg = new PdfPCell(imgBarraCorta)
-        //                {
-        //                    BorderWidth = 1,
-        //                    BorderWidthTop = 0,
-        //                    HorizontalAlignment = Element.ALIGN_CENTER,
-        //                    PaddingBottom = 5,
-        //                    PaddingTop = 5
-        //                };
-        //                cupon.AddCell(cellImg);
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-        //            // Si falla el código de barras, agregar texto
-        //            cupon.AddCell(new PdfPCell(new Paragraph(d.CodigoBarraCorto, _standardFont))
-        //            {
-        //                BorderWidth = 1,
-        //                BorderWidthTop = 0,
-        //                HorizontalAlignment = Element.ALIGN_CENTER,
-        //                PaddingBottom = 5,
-        //                PaddingTop = 5
-        //            });
-        //        }
-        //    }
-
-        //    // Número de cedulón
-        //    cupon.AddCell(new PdfPCell(new Paragraph(d.NroCedulon, _encabezado))
-        //    {
-        //        BorderWidth = 1,
-        //        BorderWidthTop = 0,
-        //        HorizontalAlignment = Element.ALIGN_CENTER,
-        //        PaddingBottom = 8,
-        //        PaddingTop = 8
-        //    });
-
-        //    return new PdfPCell(cupon)
-        //    {
-        //        BorderWidth = 0,
-        //        Padding = 5
-        //    };
-        //}
-
-        // Métodos helper para códigos de barra (copiados del código original)
         private static Image CrearBarcodeAuto(string data, PdfWriter writer, float alto, float anchoX, bool textoVisible)
         {
             if (EsNumerico(data) && data.Length % 2 == 0)
@@ -1022,35 +838,8 @@ namespace Facturacion.Helpers
         private static void AgregarFilasDetalle(PdfPTable table, ComprobanteData d, int nroTransaccion)
         {
 
-            if (d.Concepto?.Trim().ToUpper() == "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
-            {
-                string url = $"https://vecino.villaallende.gov.ar/PagosOnLine/CertificadosHabilitacion.aspx?nro_transaccion={nroTransaccion}";
-
-                // Fuente normal para el concepto
-                Font conceptoFont = new Font(_standardFont.BaseFont, 9, Font.NORMAL);
-                Phrase phrase = new Phrase();
-                phrase.Add(new Chunk(d.Concepto + "  ", conceptoFont)); // 🔹 Texto del concepto
-
-                // Fuente azul y subrayado para el link
-                Font linkFont = new Font(_standardFont.BaseFont, 9, Font.UNDERLINE, BaseColor.BLUE);
-                Anchor anchor = new Anchor("💳 PAGÁ ACÁ ➜", linkFont)
-                {
-                    Reference = url
-                };
-                phrase.Add(anchor);
-
-                PdfPCell cellConcepto = new PdfPCell(phrase)
-                {
-                    BorderWidth = 0,
-                    HorizontalAlignment = Element.ALIGN_LEFT
-                };
-                table.AddCell(cellConcepto);
-            }
-            else
-            {
-                // Si no cumple condición, celda normal
                 table.AddCell(CrearCeldaDetalle(d.Concepto));
-            }
+           
 
             //table.AddCell(CrearCeldaDetalle(d.Concepto));
 
@@ -1126,7 +915,63 @@ namespace Facturacion.Helpers
             return paragraph;
         }
 
-     
+        private static PdfPTable GetLinkPago(ComprobanteData d, int nroTransaccion)
+        {
+            if (d.Concepto?.Trim().ToUpper() != "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
+            {
+                return null;
+            }
+
+            PdfPTable tableContainer = new PdfPTable(1) { WidthPercentage = 100 };
+
+            string url = $"https://vecino.villaallende.gov.ar/PagosOnLine/CertificadosHabilitacion.aspx?nro_transaccion={nroTransaccion}";
+
+            // Cargar la imagen desde la carpeta del proyecto
+            string rutaImagen = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Img", "iconoPago.jpeg");
+            Image imagen = Image.GetInstance(rutaImagen);
+
+            // Ajustar tamaño de la imagen
+            imagen.ScaleToFit(200f, 60f);
+
+            // Crear el chunk con la imagen y asignarle la URL
+            Chunk chunkImagen = new Chunk(imagen, 0, 0, true);
+            chunkImagen.SetAnchor(url);
+
+            // Celda para la imagen
+            Paragraph pImagen = new Paragraph();
+            pImagen.Add(chunkImagen);
+            pImagen.Alignment = Element.ALIGN_RIGHT;
+
+            PdfPCell cellImagen = new PdfPCell(pImagen)
+            {
+                BorderWidth = 0,
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                PaddingTop = 15,
+                PaddingBottom = 5
+            };
+
+            // Crear el texto con link
+            var linkFont = new Font(_standardFont.BaseFont, 10, Font.NORMAL, BaseColor.BLACK);
+            Chunk chunkTexto = new Chunk("Click para pagar", linkFont);
+            chunkTexto.SetAnchor(url);
+
+            Paragraph pTexto = new Paragraph();
+            pTexto.Add(chunkTexto);
+            pTexto.Alignment = Element.ALIGN_RIGHT;
+
+            PdfPCell cellTexto = new PdfPCell(pTexto)
+            {
+                BorderWidth = 0,
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                PaddingBottom = 15,
+                PaddingRight = 33
+            };
+
+            tableContainer.AddCell(cellImagen);
+            tableContainer.AddCell(cellTexto);
+
+            return tableContainer;
+        }
 
     }
 }

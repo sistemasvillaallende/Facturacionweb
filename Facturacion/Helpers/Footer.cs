@@ -42,6 +42,7 @@ namespace Facturacion.Helpers
                 SpacingBefore = 20,
                 SpacingAfter = 10,
             };
+            table.DefaultCell.UseAscender = true;
 
             // Cupón Municipalidad
             PdfPCell cellMunicipalidad = new PdfPCell() { BorderWidth = 0 };
@@ -64,6 +65,7 @@ namespace Facturacion.Helpers
 
             // Logo izquierdo
             PdfPCell cellLogoIzq = CrearCeldaLogo(true);
+            cellLogoIzq.PaddingLeft = 12f;
             table.AddCell(cellLogoIzq);
 
             // Datos izquierdo
@@ -72,6 +74,8 @@ namespace Facturacion.Helpers
 
             // Logo derecho (reutilizamos el mismo logo)
             PdfPCell cellLogoDer = CrearCeldaLogo(false);
+            cellLogoDer.BorderWidthLeft = 1f;
+            cellLogoDer.PaddingLeft = 12f;
             table.AddCell(cellLogoDer);
 
             // Datos derecho
@@ -98,6 +102,7 @@ namespace Facturacion.Helpers
 
             // Propietario derecho
             PdfPCell cellPropDer = CrearCeldaPropietario(false, true);
+            cellPropDer.BorderWidthLeft = 1f;  
             table.AddCell(cellPropDer);
 
             // Bien derecho
@@ -224,13 +229,8 @@ namespace Facturacion.Helpers
             if (esDerecho)
                 cell.BorderWidthRight = 1f;
 
-            // Denominación según subsistema
             string denominacionFormateada = FormatearDenominacionPorSubsistema(_subsistema, _comprobanteData.Concepto, esDerecho);
             cell.AddElement(new Phrase(denominacionFormateada, _standardFont));
-            cell.AddElement(_salto);
-
-            // Detalle
-            cell.AddElement(new Phrase(_comprobanteData.Concepto, _standardFont));
             cell.AddElement(_salto);
 
             // Monto
@@ -247,7 +247,6 @@ namespace Facturacion.Helpers
             }
             catch (Exception)
             {
-                // Retorna un logo por defecto o maneja el error según sea necesario
                 return null;
             }
         }
@@ -291,7 +290,7 @@ namespace Facturacion.Helpers
                 Barcode39 code39 = new Barcode39();
                 code39.GenerateChecksum = false;
 
-                string nro = "C0" + _comprobanteData.NroCedulon.ToString().Trim();
+                string nro =  _comprobanteData.NroCedulon.ToString().Trim();
                 code39.Code = nro;
 
                 return code39.CreateImageWithBarcode(cb, null, null);
