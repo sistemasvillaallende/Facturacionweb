@@ -933,7 +933,6 @@ namespace Facturacion.Helpers
             // Ajustar tamaño de la imagen
             imagen.ScaleToFit(200f, 60f);
 
-            // Crear el chunk con la imagen y asignarle la URL
             Chunk chunkImagen = new Chunk(imagen, 0, 0, true);
             chunkImagen.SetAnchor(url);
 
