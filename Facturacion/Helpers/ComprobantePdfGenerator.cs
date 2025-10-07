@@ -918,10 +918,10 @@ namespace Facturacion.Helpers
 
         private static PdfPTable GetLinkPago(ComprobanteData d, int nroTransaccion)
         {
-            if (d.Concepto?.Trim().ToUpper() != "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
-            {
-                return null;
-            }
+            //if (d.Concepto?.Trim().ToUpper() != "DERECHO DE INSCRIPCION E INSPECCION COMERCIAL")
+            //{
+            //    return null;
+            //}
 
             PdfPTable tableContainer = new PdfPTable(1) { WidthPercentage = 100 };
 
@@ -934,7 +934,6 @@ namespace Facturacion.Helpers
             // Ajustar tamaño de la imagen
             imagen.ScaleToFit(200f, 60f);
 
-            // Crear el chunk con la imagen y asignarle la URL
             Chunk chunkImagen = new Chunk(imagen, 0, 0, true);
             chunkImagen.SetAnchor(url);
 

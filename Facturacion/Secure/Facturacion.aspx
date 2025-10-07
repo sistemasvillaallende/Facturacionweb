@@ -185,6 +185,55 @@ s
             text-align: center;
             z-index: 1000;
         }
+
+        .select2-container--default .select2-selection--single {
+        height: 34px !important;
+        border: 1px solid #ccc !important;
+        border-radius: 2px !important;
+        background-color: #fff;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #555;
+        line-height: 32px;
+        padding-left: 12px;
+        padding-right: 30px;
+        font-size: 14px;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 32px;
+        right: 1px;
+        width: 30px;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        border-color: #888 transparent transparent transparent;
+        border-width: 5px 4px 0 4px;
+    }
+    
+    /* Focus igual que form-control de Bootstrap */
+    .select2-container--default.select2-container--focus .select2-selection--single {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+    }
+    
+    /* Dropdown con altura estándar */
+    .select2-container--default .select2-results > .select2-results__options {
+        max-height: 200px;
+    }
+    
+    /* Opciones del dropdown */
+    .select2-container--default .select2-results__option {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    
+    /* Sin placeholder visible para mantener diseño original */
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #999;
+    }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -521,6 +570,9 @@ s
     <!-- jQuery 2.1.4 -->
     <script src="../App_Themes/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script src="../App_Themes/bootstrap/js/quicksearch.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <a href="http://10.0.0.24/siimva/" id="enlaceHeader">
 
         <script>
@@ -543,5 +595,26 @@ s
                 // instance, using default configuration.
                 CKEDITOR.replace('ctl00$ContentPlaceHolder1$txtObs');
             });
+
+            $(document).ready(function () {
+                // Inicializar Select2
+                $('#<%= DDLCatDeuda.ClientID %>').select2({
+        placeholder: "Seleccionar o buscar categoría...",
+        allowClear: true,
+        width: '100%',
+        dropdownAutoWidth: true,
+        language: {
+            noResults: function () {
+                return "No se encontraron resultados";
+            },
+            searching: function () {
+                return "Buscando...";
+            },
+            inputTooShort: function () {
+                return "Escriba para buscar";
+            }
+        }
+    });
+});
         </script>
 </asp:Content>
