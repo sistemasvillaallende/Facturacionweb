@@ -1001,6 +1001,7 @@
     <Compile Include="Reportes\Facturas.aspx.designer.cs">
       <DependentUpon>Facturas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reportes\RoundedButtonCellEvent.cs" />
     <Compile Include="Secure\Facturacion.aspx.cs">
       <DependentUpon>Facturacion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

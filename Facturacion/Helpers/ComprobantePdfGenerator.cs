@@ -48,9 +48,11 @@ namespace Facturacion.Helpers
                    
                     doc.Add(GetDetalle(d,nroTransaccion));
 
-                    var linkPago = GetLinkPago(d, nroTransaccion);
+                    var linkPago = RoundedButtonCellEvent.GetBotonAbonarEnLinea(nroTransaccion);//GetLinkPago(d, nroTransaccion);
                     if (linkPago != null)
                     {
+                        doc.Add(salto);
+                        doc.Add(salto);
                         doc.Add(linkPago);
                         doc.Add(salto);
                     }
@@ -77,7 +79,6 @@ namespace Facturacion.Helpers
                 }
             }
         }
-
 
         private static PdfPTable GetEncabezado(ComprobanteData d, PdfWriter writer)
         {
